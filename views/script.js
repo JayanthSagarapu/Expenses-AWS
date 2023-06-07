@@ -11,25 +11,33 @@ loginBtn.onclick = async () => {
 
 async function signUp(event) {
   event.preventDefault();
+  const username = event.target.username.value;
+  const email = event.target.email.value;
+  const password = event.target.email.value;
 
-  try {
-    const signUpDetails = {
-      name: event.target.username.value,
-      email: event.target.email.value,
-      password: event.target.email.value,
-    };
+  const obj = {
+    username,
+    email,
+    password,
+  };
+  // console.log(signUpDetails);
 
-    const response = await axios.post(
-      "http://localhost:3000/user/signup",
-      signUpDetails
-    );
-
-    if (response.status === 201) {
-      window.location.href = "../views/login.html";
-    } else {
-      throw new Error("Failed to Login");
+  if (username && email && password) {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/user/signup",
+        obj
+      );
+      console.log(response);
+      if (response.status === 201) {
+        window.location.href = "../views/login.html";
+      } else {
+        // throw new Error("Failed to Login");
+        console.log("failed");
+      }
+    } catch (err) {
+      // document.body.innerHTML = `<div style ="color:red> ${err}</div>`;
+      console.log(err);
     }
-  } catch (err) {
-    document.body.innerHTML = `<div style ="color:red> ${err}</div>`;
   }
 }

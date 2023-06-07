@@ -13,11 +13,11 @@
     <title>Login</title>
   </head>
   <body>
-    <header class="header bg-dark text-white p-3 d-flex flex-row">
+    <header class="header bg-dark text-white p-3 d-flex flex-row mb-4">
       <h1 class="ml-5">App</h1>
 
-      <ul class="nav ml-auto">
-        <li>
+      <ul class="nav ml-auto mr-5 mt-3">
+        <li class="mr-2">
           Create Account
           <input
             type="button"
@@ -39,12 +39,12 @@
         </li>
       </ul>
     </header>
-    <div class="card card-body m-auto w-50 align-items-center">
+    <div class="card card-body m-auto w-25 align-items-center">
       <form
         action="/views/login.html"
         method="post"
         onsubmit="login(event)"
-        class="d-flex flex-column w-50"
+        class="d-flex flex-column w-75"
       >
         Email:<input
           type="text"
