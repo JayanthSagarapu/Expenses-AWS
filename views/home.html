@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <title>Home</title>
+  </head>
+  <body>
+    <header class="header bg-dark text-white p-3 d-flex flex-row">
+      <h1 class="ml-5">App</h1>
+
+      <ul class="nav ml-auto">
+        <li>
+          Create Account
+          <input
+            type="button"
+            id="sign"
+            href="/views/signup.html"
+            value="SignUp"
+            style="cursor: pointer"
+          />
+        </li>
+        <li>
+          <input
+            type="button"
+            id="login"
+            href="/views/login.html"
+            value="Login"
+            style="cursor: pointer"
+          />
+        </li>
+      </ul>
+    </header>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
