@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <title>Expense Tracker</title>
+  </head>
+</html>
+<body style="background-color: rgba(156, 151, 151, 0.852)">
+  <header
+    id="header"
+    class="text-white text-center p-4"
+    style="background-color: rgb(52, 52, 54)"
+  >
+    <h1>Expense Tracker</h1>
+  </header>
+  <div class="container card card-body w-75 mt-2 mb-2">
+    <form
+      id="form"
+      action="#"
+      method="post"
+      onsubmit="addItem(event)"
+      class="align-self-center"
+    >
+      Choose expenseamount:
+      <input type="number" id="amount" />
+      Choose description:
+      <input type="text" id="description" />
+      Choose a category:
+      <select name="category" id="category">
+        <option></option>
+        <option value="petrol">Petrol/diesel</option>
+        <option value="Grocery">Grocery</option>
+        <option value="House">House</option>
+        <option value="Food">Food</option>
+        <option value="movie">Movie</option>
+        <option value="gym">Gym/Fitness</option>
+        <option value="Bills">Bills</option>
+      </select>
+      <button value="submit" id="submit" class="btn border border-dark ml-3">
+        Add Expense
+      </button>
+    </form>
+  </div>
+  <ul id="list" class="list-group">
+    <li
+      class="list-group-item align-self-center w-75 mb-2 p-3 d-none "
+      style="background-color: rgba(44, 42, 47, 0.818);;"
+    >
+      <button class="btn btn-sm float-right delete">Delete</button>
+      <button class="btn btn-sm float-right edit mr-2">Edit</button>
+    </li>
+  </ul>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  <script src="expense.js"></script>
+</body>
+</html>

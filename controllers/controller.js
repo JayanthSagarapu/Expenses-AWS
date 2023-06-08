@@ -1,5 +1,6 @@
 const User = require("../models/UserDb");
 const bcrypt = require("bcrypt");
+const Expense = require("../models/expense");
 
 exports.addUser = async (req, res, next) => {
   try {
@@ -45,4 +46,33 @@ exports.loginUser = async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
+};
+
+exports.createExpense = async (req, res) => {
+  try {
+    const { amount, description, category } = req.body;
+
+    const expense = await Expense.create({
+      amount: amount,
+      description: description,
+      category: category,
+    });
+    res.send(expense);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+exports.getExpenses = async (req, res) => {
+  const expenses = await Expense.findAll();
+  res.send(expenses);
+};
+
+exports.deleteExpense = async (req, res) => {
+  const expenseId = req.params.id;
+
+  await Expense.destroy({ where: { id: expenseId } });
+  res.status(200).json({
+    message: "Successfully deleted Expense",
+  });
 };

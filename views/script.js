@@ -59,8 +59,9 @@ async function login(event) {
         obj
       );
       console.log(response);
-      alert("successful");
-      event.target.reset();
+
+      window.location.href = "../views/expense.html";
+      // event.target.reset();
     }
   } catch (err) {
     errormsg.innerText = `Error : Something went wrong. SignUP if New User`;
