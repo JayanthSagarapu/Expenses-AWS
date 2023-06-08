@@ -11,3 +11,19 @@ exports.addUser = async (req, res, next) => {
   console.log(user);
   res.send(user);
 };
+
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  const finduser = await User.findOne({ where: { email } });
+  if (finduser) {
+    if (password == finduser.password) {
+      res.status(200).json({
+        message: "Successfully Logged In",
+      });
+    } else {
+      res.status(403).json({ message: "Password is wrong" });
+    }
+  } else {
+    res.status(404).json({ message: "User not found in table" });
+  }
+};
