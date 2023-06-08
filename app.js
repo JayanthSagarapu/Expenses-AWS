@@ -5,17 +5,19 @@ const cors = require("cors");
 
 const routes = require("./routes/router");
 
-const { sequelize, UserDetails } = require("./models/UserDb");
-const port = 8080;
+const sequelize = require("./util/database");
 
-app.use(cors);
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", routes);
+app.use("/user", routes);
 
-sequelize.sync().then(
-  app.listen(port, () => {
-    console.log("running");
+sequelize
+  .sync()
+  .then(() => {
+    app.listen(3000);
   })
-);
+  .catch((err) => {
+    console.log(err);
+  });

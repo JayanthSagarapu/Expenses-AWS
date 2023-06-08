@@ -1,17 +1,13 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("Expenses-AWS", "root", "Pj@8106228817", {
-  dialect: "mysql",
-  host: "localhost",
-});
+const sequelize = require("../util/database");
 
-const UserDetails = sequelize.define("user", {
+const User = sequelize.define("user", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
-    unique: true,
   },
 
   username: {
@@ -31,4 +27,4 @@ const UserDetails = sequelize.define("user", {
   },
 });
 
-module.exports = { sequelize, UserDetails };
+module.exports = User;

@@ -14,27 +14,22 @@
   </head>
   <body>
     <header class="header bg-dark text-white p-3 d-flex flex-row mb-4">
-      <h1 class="ml-5">App</h1>
+      <h1 class="ml-5">
+        <a
+          href="/views/home.html"
+          class="active"
+          style="cursor: pointer; text-decoration: none; color: white"
+          >Daily Expenses</a
+        >
+      </h1>
 
       <ul class="nav ml-auto mr-5 mt-3">
         <li class="mr-2">
           Create Account
-          <input
-            type="button"
-            id="sign"
-            href="/views/signup.html"
-            value="SignUp"
-            style="cursor: pointer"
-          />
+          <button id="sign" style="cursor: pointer">SignUp</button>
         </li>
         <li>
-          <input
-            type="button"
-            id="login"
-            href="/views/login.html"
-            value="Login"
-            style="cursor: pointer"
-          />
+          <button id="login" style="cursor: pointer">Login</button>
         </li>
       </ul>
     </header>

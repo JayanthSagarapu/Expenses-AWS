@@ -1,16 +1,13 @@
-const { sequelize, UserDetails } = require("../models/UserDb");
+const User = require("../models/UserDb");
 
-exports.home = async (req, res) => {
-  res.send("home");
-};
-
-exports.addUser = async (req, res) => {
+exports.addUser = async (req, res, next) => {
   const { username, email, password } = req.body;
 
-  const user = await UserDetails.create({
+  const user = await User.create({
     username: username,
     email: email,
     password: password,
   });
+  console.log(user);
   res.send(user);
 };
