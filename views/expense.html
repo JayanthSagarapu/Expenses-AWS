@@ -16,10 +16,12 @@
 <body style="background-color: rgba(156, 151, 151, 0.852)">
   <header
     id="header"
-    class="text-white text-center p-4"
+    class="text-white text-center p-4 d-flex"
     style="background-color: rgb(52, 52, 54)"
   >
-    <h1>Expense Tracker</h1>
+    <h1 class="ml-auto">Expense Tracker</h1>
+    <button id="raz-btn" class="float-right ml-auto btn border border-dark" style="cursor: pointer;">Buy Premium</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </header>
   <div class="container card card-body w-75 mt-2 mb-2">
     <form
@@ -47,6 +49,7 @@
       <button value="submit" id="submit" class="btn border border-dark ml-3">
         Add Expense
       </button>
+      
     </form>
   </div>
   <ul id="list" class="list-group">
