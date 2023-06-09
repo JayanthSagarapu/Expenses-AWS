@@ -1,6 +1,7 @@
 const User = require("../models/UserDb");
 const bcrypt = require("bcrypt");
 const Expense = require("../models/expense");
+const jwt = require("jsonwebtoken");
 
 exports.addUser = async (req, res, next) => {
   try {
@@ -22,6 +23,10 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
+async function genereteToken(id) {
+  return jwt.sign({ userId: id }, "jayanthsecretkey");
+}
+
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -29,9 +34,11 @@ exports.loginUser = async (req, res) => {
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
-          res
-            .status(200)
-            .json({ success: true, message: "Successfully Logged In" });
+          res.status(200).json({
+            success: true,
+            message: "Successfully Logged In",
+            token: genereteToken(user.id),
+          });
         } else {
           res
             .status(401)
@@ -64,7 +71,7 @@ exports.createExpense = async (req, res) => {
 };
 
 exports.getExpenses = async (req, res) => {
-  const expenses = await Expense.findAll();
+  const expenses = await Expense.findAll({ where: { userId: req.user.id } });
   res.send(expenses);
 };
 

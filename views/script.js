@@ -59,8 +59,8 @@ async function login(event) {
         obj
       );
       console.log(response);
-
-      window.location.href = "../views/expense.html";
+      localStorage.setItem("token", response.data.token);
+      // window.location.href = "../views/expense.html";
       // event.target.reset();
     }
   } catch (err) {

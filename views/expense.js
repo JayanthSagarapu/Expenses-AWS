@@ -38,7 +38,10 @@ window.addEventListener("DOMContentLoaded", reloadpage);
 
 async function reloadpage() {
   try {
-    const response = await axios.get("http://localhost:3000/getExpenses");
+    const token = localStorage.getItem("token");
+    const response = await axios.get("http://localhost:3000/getExpenses", {
+      headers: { Authorization: token },
+    });
 
     console.log(response);
     response.data.forEach((element) => {
