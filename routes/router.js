@@ -9,7 +9,11 @@ router.post("/user/signup", userController.addUser);
 
 router.post("/user/login", userController.loginUser);
 
-router.post("/expenses/createExpense", userController.createExpense);
+router.post(
+  "/expenses/createExpense",
+  userAuthentication.authenticate,
+  userController.createExpense
+);
 
 router.get(
   "/getExpenses",
@@ -17,6 +21,10 @@ router.get(
   userController.getExpenses
 );
 
-router.delete("/deleteExpense/:id", userController.deleteExpense);
+router.delete(
+  "/deleteExpense/:id",
+  userAuthentication.authenticate,
+  userController.deleteExpense
+);
 
 module.exports = router;

@@ -19,9 +19,13 @@ async function addItem(event) {
 
     if (amount && description && category) {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.post(
           "http://localhost:3000/expenses/createExpense",
-          obj
+          obj,
+          {
+            headers: { Authorization: token },
+          }
         );
         console.log(response);
         ShowOnScreen(response.data);

@@ -3,9 +3,9 @@ const User = require("../models/UserDb");
 
 const authenticate = async (req, res, next) => {
   try {
-    const token = req.header("authorization");
-    const userId = jwt.verify(token, "jayanthsecretkey");
-    const user = await User.findByPk(userId);
+    const token = req.header("Authorization");
+    const userToken = jwt.verify(token, "jayanthsecretkey");
+    const user = await User.findByPk(userToken.userId);
     req.user = user;
     next();
   } catch (err) {

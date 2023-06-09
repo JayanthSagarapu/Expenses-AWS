@@ -20,7 +20,7 @@ Expense.belongsTo(User);
 app.use("/", routes);
 
 sequelize
-  .sync({ force: true })
+  .sync()
   .then(() => {
     app.listen(3000);
   })

@@ -60,7 +60,7 @@ async function login(event) {
       );
       console.log(response);
       localStorage.setItem("token", response.data.token);
-      // window.location.href = "../views/expense.html";
+      window.location.href = "../views/expense.html";
       // event.target.reset();
     }
   } catch (err) {

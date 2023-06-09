@@ -23,21 +23,21 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
-async function genereteToken(id) {
+const generateAccessToken = (id) => {
   return jwt.sign({ userId: id }, "jayanthsecretkey");
-}
+};
 
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
-    if (user) {
-      bcrypt.compare(password, user.password, (err, result) => {
+    const founduser = await User.findOne({ where: { email } });
+    if (founduser) {
+      bcrypt.compare(password, founduser.password, (err, result) => {
         if (result) {
           res.status(200).json({
             success: true,
             message: "Successfully Logged In",
-            token: genereteToken(user.id),
+            token: generateAccessToken(founduser.id),
           });
         } else {
           res
@@ -63,6 +63,7 @@ exports.createExpense = async (req, res) => {
       amount: amount,
       description: description,
       category: category,
+      userId: req.user.id,
     });
     res.send(expense);
   } catch (err) {
@@ -78,8 +79,14 @@ exports.getExpenses = async (req, res) => {
 exports.deleteExpense = async (req, res) => {
   const expenseId = req.params.id;
 
-  await Expense.destroy({ where: { id: expenseId } });
-  res.status(200).json({
-    message: "Successfully deleted Expense",
+  const expense = await Expense.findOne({
+    where: { id: expenseId, userId: req.user.id },
   });
+
+  if (expense) {
+    await Expense.destroy();
+    res.status(200).json({
+      message: "Successfully deleted Expense",
+    });
+  }
 };
