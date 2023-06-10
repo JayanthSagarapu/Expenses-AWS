@@ -23,8 +23,8 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
-const generateAccessToken = (id) => {
-  return jwt.sign({ userId: id }, "jayanthsecretkey");
+const generateAccessToken = (id, username) => {
+  return jwt.sign({ userId: id, username: username }, "jayanthsecretkey");
 };
 
 exports.loginUser = async (req, res) => {
@@ -37,7 +37,7 @@ exports.loginUser = async (req, res) => {
           res.status(200).json({
             success: true,
             message: "Successfully Logged In",
-            token: generateAccessToken(founduser.id),
+            token: generateAccessToken(founduser.id, founduser.username),
           });
         } else {
           res

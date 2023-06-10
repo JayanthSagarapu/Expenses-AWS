@@ -119,7 +119,7 @@ razBtn.onclick = async function (e) {
     "http://localhost:3000/purchase/premiummembership",
     { headers: { Authorization: token } }
   );
-  console.log(response);
+  console.log("response : ", response);
   var options = {
     key: response.data.key_id,
     order_id: response.data.order.id,

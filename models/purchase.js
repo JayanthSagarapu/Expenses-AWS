@@ -8,8 +8,8 @@ const Order = sequelize.define("order", {
     autoIncrement: true,
     allowNull: false,
   },
-  payment_id: Sequelize.STRING,
-  order_id: Sequelize.STRING,
+  paymentid: Sequelize.STRING,
+  orderid: Sequelize.STRING,
   status: Sequelize.STRING,
 });
 
