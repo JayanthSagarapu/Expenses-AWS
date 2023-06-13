@@ -2,6 +2,7 @@ const User = require("../models/UserDb");
 const bcrypt = require("bcrypt");
 const Expense = require("../models/expense");
 const jwt = require("jsonwebtoken");
+const sequelize = require("../util/database");
 
 const addUser = async (req, res, next) => {
   try {
@@ -64,22 +65,28 @@ const loginUser = async (req, res) => {
 
 const createExpense = async (req, res) => {
   try {
+    const t = await sequelize.transaction();
     const { amount, description, category } = req.body;
 
-    const expense = await Expense.create({
-      amount: amount,
-      description: description,
-      category: category,
-      userId: req.user.id,
-    });
+    const expense = await Expense.create(
+      {
+        amount: amount,
+        description: description,
+        category: category,
+        userId: req.user.id,
+      },
+      { transaction: t }
+    );
 
     const total_Expense = Number(req.user.total_Expense) + Number(amount);
     await User.update(
       { total_Expense: total_Expense },
-      { where: { id: req.user.id } }
+      { where: { id: req.user.id }, transaction: t }
     );
+    await t.commit();
     res.send(expense);
   } catch (err) {
+    await t.rollback();
     res.status(500).json(err);
   }
 };
@@ -90,17 +97,40 @@ const getExpenses = async (req, res) => {
 };
 
 const deleteExpense = async (req, res) => {
-  const expenseId = req.params.id;
+  const t = await sequelize.transaction();
+  try {
+    const expenseId = req.params.id;
 
-  const expense = await Expense.findOne({
-    where: { id: expenseId, userId: req.user.id },
-  });
-
-  if (expense) {
-    await Expense.destroy();
-    res.status(200).json({
-      message: "Successfully deleted Expense",
+    const expense = await Expense.findOne({
+      where: { id: expenseId, userId: req.user.id },
+      transaction: t,
     });
+
+    if (expense) {
+      await Expense.destroy();
+      const total_Expense =
+        Number(req.user.total_Expense) - Number(expense.amount);
+
+      await User.update(
+        {
+          total_Expense: total_Expense,
+          transaction: t,
+        },
+        {
+          where: { id: req.user.id },
+          transaction: t,
+        }
+      );
+
+      await t.commit();
+
+      res.status(200).json({
+        message: "Successfully deleted Expense",
+      });
+    }
+  } catch (err) {
+    await t.rollback();
+    res.status(500).json({ message: "Delete Expense problem" });
   }
 };
 
