@@ -156,7 +156,9 @@ async function showLeaderBoard() {
       leaderBoardItem.classList = "container card card-body w-50 d-block";
       leaderBoardItem.innerHTML += "<h3>Leader Board</h3>";
       leaderBoardData.data.forEach((userDetails) => {
-        leaderBoardItem.innerHTML += `<li class="bg-secondary mb-1 w-100 p-2" style = "list-style : none"> Name - ${userDetails.username} , Total Expense - ${userDetails.totalExpense}`;
+        leaderBoardItem.innerHTML += `<li class="bg-secondary mb-1 w-100 p-2" style = "list-style : none"> Name - ${
+          userDetails.username
+        } , Total Expense - ${userDetails.total_Expense || 0}`;
       });
     } catch (err) {
       console.log(err);
