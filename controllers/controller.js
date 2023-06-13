@@ -107,7 +107,7 @@ const deleteExpense = async (req, res) => {
     });
 
     if (expense) {
-      await Expense.destroy();
+      await expense.destroy();
       const total_Expense =
         Number(req.user.total_Expense) - Number(expense.amount);
 

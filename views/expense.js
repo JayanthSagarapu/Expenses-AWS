@@ -87,6 +87,8 @@ async function reloadpage() {
 }
 
 async function ShowOnScreen(res) {
+  const token = localStorage.getItem("token");
+
   const li = document.createElement("li");
 
   li.className =
@@ -110,7 +112,9 @@ async function ShowOnScreen(res) {
   delbtn.onclick = async (e) => {
     e.preventDefault();
     try {
-      await axios.delete(`http://localhost:3000/deleteExpense/${res.id}`);
+      await axios.delete(`http://localhost:3000/deleteExpense/${res.id}`, {
+        headers: { Authorization: token },
+      });
       list.removeChild(li);
     } catch (err) {
       console.log(err);
@@ -125,7 +129,9 @@ async function ShowOnScreen(res) {
 
   editbtn.onclick = async () => {
     try {
-      await axios.delete(`http://localhost:3000/deleteExpense/${res.id}`);
+      await axios.delete(`http://localhost:3000/deleteExpense/${res.id}`, {
+        headers: { Authorization: token },
+      });
       list.removeChild(li);
     } catch (err) {
       console.error(err);
