@@ -72,6 +72,12 @@ const createExpense = async (req, res) => {
       category: category,
       userId: req.user.id,
     });
+
+    const total_Expense = Number(req.user.total_Expense) + Number(amount);
+    await User.update(
+      { total_Expense: total_Expense },
+      { where: { id: req.user.id } }
+    );
     res.send(expense);
   } catch (err) {
     res.status(500).json(err);
