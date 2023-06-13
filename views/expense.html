@@ -19,10 +19,32 @@
     class="text-white text-center p-4 d-flex"
     style="background-color: rgb(52, 52, 54)"
   >
-    <h1 class="ml-auto">Expense Tracker</h1>
-    <button id="raz-btn" class="float-right ml-auto btn border border-dark" style="cursor: pointer;">Buy Premium</button>
+    <div class="w-75 ml-5">
+      <h1 class="">Expense Tracker</h1>  
+    </div>
+    
+
+    <div id="leaderboardBtn" class=" ml-auto float-right">
+      <button id='showleaderBtn' class="btn border border-dark float-right h-100 ml-auto bg-success text-white" style="visibility: hidden;">Show leaderboard</button>
+  </div>
+  <button id="raz-btn" class=" btn border border-dark float-right bg-white ml-auto" style="cursor:pointer;">Buy Premium</button>
+
+
     
   </header>
+
+  <div id="expensetotal" class="container card card-body w-75 bg-secondary p-1 d-flex flex-row">
+    <div  class="card card-body w-25 bg-white ">
+        <label for="earning" style="text-align: center; font-size: large;">Earning:</label><h5 id="Earning" class="align-self-center"></h5>
+    </div>
+    <div  class="card card-body w-25 bg-white ">
+      <label for="expense" style="text-align: center; font-size: large;">Expense:</label><h5 id="Expense" class="align-self-center"></h5>
+  </div>
+  <div  class="card card-body w-25 bg-white ">
+    <label for="balance" style="text-align: center;text-decoration: solid;font-size: large;">Balance:</label><h5 id="balance" class="align-self-center"></h5>
+</div>
+</div>
+  </div>
   <div class="container card card-body w-75 mt-2 mb-2">
     <form
       id="form"
@@ -51,7 +73,9 @@
       </button>
       
     </form>
+    
   </div>
+  
   <ul id="list" class="list-group">
     <li
       class="list-group-item align-self-center w-75 mb-2 p-3 d-none "
@@ -61,6 +85,7 @@
       <button class="btn btn-sm float-right edit mr-2">Edit</button>
     </li>
   </ul>
+  <div id="leaderboard" class="container card card-body w-75 d-none"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
   <script src="expense.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

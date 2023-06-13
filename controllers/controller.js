@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const Expense = require("../models/expense");
 const jwt = require("jsonwebtoken");
 
-exports.addUser = async (req, res, next) => {
+const addUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
@@ -23,11 +23,14 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
-const generateAccessToken = (id, username) => {
-  return jwt.sign({ userId: id, username: username }, "jayanthsecretkey");
+const generateAccessToken = (id, username, ispremiumuser) => {
+  return jwt.sign(
+    { userId: id, username: username, ispremiumuser },
+    "jayanthsecretkey"
+  );
 };
 
-exports.loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const founduser = await User.findOne({ where: { email } });
@@ -37,7 +40,11 @@ exports.loginUser = async (req, res) => {
           res.status(200).json({
             success: true,
             message: "Successfully Logged In",
-            token: generateAccessToken(founduser.id, founduser.username),
+            token: generateAccessToken(
+              founduser.id,
+              founduser.username,
+              founduser.ispremiumuser
+            ),
           });
         } else {
           res
@@ -55,7 +62,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-exports.createExpense = async (req, res) => {
+const createExpense = async (req, res) => {
   try {
     const { amount, description, category } = req.body;
 
@@ -71,12 +78,12 @@ exports.createExpense = async (req, res) => {
   }
 };
 
-exports.getExpenses = async (req, res) => {
+const getExpenses = async (req, res) => {
   const expenses = await Expense.findAll({ where: { userId: req.user.id } });
   res.send(expenses);
 };
 
-exports.deleteExpense = async (req, res) => {
+const deleteExpense = async (req, res) => {
   const expenseId = req.params.id;
 
   const expense = await Expense.findOne({
@@ -89,4 +96,13 @@ exports.deleteExpense = async (req, res) => {
       message: "Successfully deleted Expense",
     });
   }
+};
+
+module.exports = {
+  addUser,
+  loginUser,
+  createExpense,
+  getExpenses,
+  deleteExpense,
+  generateAccessToken,
 };
