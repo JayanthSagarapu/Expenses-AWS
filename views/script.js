@@ -70,3 +70,24 @@ async function login(event) {
     console.log(err);
   }
 }
+
+async function forgetPassword(event) {
+  try {
+    event.preventDefault();
+    const email = event.target.email.value;
+
+    if (email) {
+      const response = await axios.post(
+        "http://localhost:3000/password/forgotpassword",
+        {
+          email: email,
+        }
+      );
+      window.location.href = "../views/login.html";
+      event.target.reset();
+      console.log(response);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
