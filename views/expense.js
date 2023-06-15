@@ -176,14 +176,15 @@ const downloadBtn = document.getElementById("downloadexpense");
 
 downloadBtn.onclick = async function () {
   try {
+    const token = localStorage.getItem("token");
     const response = await axios.get("http://localhost:3000/user/download", {
       headers: { Authorization: token },
     });
-    if (response.status === 201) {
+    if (response.status === 200) {
       //the bcakend is essentially sending a download link
       //  which if we open in browser, the file would download
       var a = document.createElement("a");
-      a.href = response.data.fileUrl;
+      a.href = response.data.fileURl;
       a.download = "myexpense.csv";
       a.click();
     } else {

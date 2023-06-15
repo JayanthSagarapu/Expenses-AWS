@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const Expense = require("../models/expense");
 const jwt = require("jsonwebtoken");
 const sequelize = require("../util/database");
+const S3service = require("../services/S3services");
 
 const addUser = async (req, res, next) => {
   try {
@@ -60,6 +61,22 @@ const loginUser = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json(err);
+  }
+};
+
+const downloadExpense = async (req, res) => {
+  try {
+    const expenses = await req.user.getExpenses();
+    // console.log(expenses);
+    const stringifiedExpenses = JSON.stringify(expenses);
+
+    const userId = req.user.id;
+    const filename = `Expense${userId}/${new Date()}.txt`;
+    const fileURl = await S3service.uploadToS3(stringifiedExpenses, filename);
+    res.status(200).json({ fileURl, success: true });
+  } catch (err) {
+    res.status(500).json({ fileURl: "", success: false, err: err });
+    console.log(err);
   }
 };
 
@@ -141,4 +158,5 @@ module.exports = {
   getExpenses,
   deleteExpense,
   generateAccessToken,
+  downloadExpense,
 };
