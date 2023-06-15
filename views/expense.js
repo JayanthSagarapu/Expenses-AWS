@@ -172,6 +172,28 @@ async function showLeaderBoard() {
   };
 }
 
+const downloadBtn = document.getElementById("downloadexpense");
+
+downloadBtn.onclick = async function () {
+  try {
+    const response = await axios.get("http://localhost:3000/user/download", {
+      headers: { Authorization: token },
+    });
+    if (response.status === 201) {
+      //the bcakend is essentially sending a download link
+      //  which if we open in browser, the file would download
+      var a = document.createElement("a");
+      a.href = response.data.fileUrl;
+      a.download = "myexpense.csv";
+      a.click();
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 razBtn.onclick = async function (e) {
   const token = localStorage.getItem("token");
   const response = await axios.get(
@@ -210,3 +232,18 @@ razBtn.onclick = async function (e) {
     alert("Something Went wrong");
   });
 };
+
+// const addBtn = document.getElementById("addbtn");
+// const dailyBtn = document.getElementById("dailybtn");
+// const addBtnPage = document.getElementById("addbtnpage");
+// const dailyBtnPage = document.getElementById("dailybtnpage");
+
+// addBtn.onclick = async () => {
+//   addBtnPage.classList = "active";
+//   dailyBtnPage.classList = "d-none";
+// };
+
+// dailyBtn.onclick = async () => {
+//   dailyBtnPage.classList = "m-auto w-75 d-block p-3 bg-secondary";
+//   addBtnPage.classList = "d-none";
+// };
