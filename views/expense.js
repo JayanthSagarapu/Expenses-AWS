@@ -29,7 +29,6 @@ async function addItem(event) {
             headers: { Authorization: token },
           }
         );
-        console.log(response);
         ShowOnScreen(response.data);
       } catch (err) {
         console.log(err);
@@ -61,8 +60,7 @@ async function showPremiumUserMessage() {
   razBtn.style = "cursor : default";
 }
 
-window.addEventListener("DOMContentLoaded", reloadpage);
-async function reloadpage() {
+window.addEventListener("DOMContentLoaded", async () => {
   try {
     const token = localStorage.getItem("token");
     const decodeToken = parseJwt(token);
@@ -76,15 +74,56 @@ async function reloadpage() {
     const response = await axios.get("http://localhost:3000/getExpenses", {
       headers: { Authorization: token },
     });
+    showPagination(response.data);
 
-    console.log(response);
-    response.data.forEach((element) => {
-      ShowOnScreen(element);
-    });
+    async function getExpenses(page) {
+      const response = await axios.get(
+        `http://localhost:3000/getExpenses?page=${page}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      console.log(response);
+      response.data.expenses.forEach((element) => {
+        ShowOnScreen(element);
+      });
+    }
+    let currentPage = 1;
+    getExpenses(currentPage);
+
+    function showPagination({
+      currentPage,
+      hasNextPage,
+      nextPage,
+      hasPrevPage,
+      prevPage,
+      lastpage,
+    }) {
+      if (hasPrevPage) {
+        document.getElementById("prevPageBtn").innerHTML = prevPage;
+        document
+          .getElementById("prevPageBtn")
+          .addEventListener("click", () => getExpenses(prevPage));
+      }
+
+      if (currentPage) {
+        document.getElementById("currentPageBtn").innerHTML = currentPage;
+        document
+          .getElementById("currentPageBtn")
+          .addEventListener("click", () => getExpenses(currentPage));
+      }
+
+      if (hasNextPage) {
+        document.getElementById("nextPageBtn").innerHTML = nextPage;
+        document
+          .getElementById("nextPageBtn")
+          .addEventListener("click", () => getExpenses(nextPage));
+      }
+    }
   } catch (err) {
     console.log(err);
   }
-}
+});
 
 async function ShowOnScreen(res) {
   const token = localStorage.getItem("token");
@@ -233,6 +272,31 @@ razBtn.onclick = async function (e) {
     alert("Something Went wrong");
   });
 };
+
+// function showPagination({
+//   currentPage,
+//   hasNextPage,
+//   nextPage,
+//   hasPrevPage,
+//   prevPage,
+//   lastpage,
+// }) {
+//   const currentPageBtn = document.getElementById("currentPageBtn");
+//   const prevPageBtn = document.getElementById("prevPageBtn");
+//   const document.getElementById('nextPageBtn') = document.getElementById("document.getElementById('nextPageBtn')");
+//   if (hasPrevPage) {
+//     prevPageBtn.innerHTML = prevPage;
+//     prevPageBtn.addEventListener("click", () => getExpenses(prevPage));
+//   }
+
+//   currentPageBtn.innerHTML = `<h3>${currentPage}</h3>`;
+//   currentPageBtn.addEventListener("click", () => getExpenses(currentPage));
+
+//   if (hasNextPage) {
+//     document.getElementById('nextPageBtn').innerHTML = nextPage;
+//     document.getElementById('nextPageBtn').addEventListener("click", () => getExpenses(nextPage));
+//   }
+// }
 
 // const addBtn = document.getElementById("addbtn");
 // const dailyBtn = document.getElementById("dailybtn");

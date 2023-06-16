@@ -109,8 +109,40 @@ const createExpense = async (req, res) => {
 };
 
 const getExpenses = async (req, res) => {
-  const expenses = await Expense.findAll({ where: { userId: req.user.id } });
-  res.send(expenses);
+  // const expenses = await Expense.findAll({ where: { userId: req.user.id } });
+  // res.send(expenses);
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = 3;
+    const offset = (page - 1) * limit;
+
+    const response = await Expense.findAndCountAll({
+      where: { userId: req.user.id },
+      limit,
+      offset,
+    });
+
+    // const totalItems = Expense.count();
+    // const response = await Expense.findAll({
+    //   offset: offset,
+    //   limit: limit,
+    // });
+    // const expenses = response.expenses;
+    let totalItems = response.count;
+    res.json({
+      expenses: response.rows,
+      // expenses: expenses,
+      totalPages: Math.ceil(totalItems / limit),
+      currentPage: page,
+      hasNextPage: limit * page < totalItems,
+      nextPage: page + 1,
+      hasPrevPage: page > 1,
+      prevPage: page - 1,
+      lastPage: Math.ceil(totalItems / limit),
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const deleteExpense = async (req, res) => {
