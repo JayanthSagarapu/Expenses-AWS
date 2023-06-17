@@ -110,14 +110,13 @@ const createExpense = async (req, res) => {
 
 const getExpenses = async (req, res) => {
   try {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-    const offset = (page - 1) * limit;
+    const page = +req.query.page || 1;
+    const limit = +req.query.limit || 5;
 
     const response = await Expense.findAndCountAll({
       where: { userId: req.user.id },
-      limit,
-      offset,
+      offset: (page - 1) * limit,
+      limit: limit,
     });
     let totalItems = response.count;
     res.json({
@@ -125,6 +124,11 @@ const getExpenses = async (req, res) => {
       totalPages: Math.ceil(totalItems / limit),
       currentPage: page,
       totalItems: totalItems,
+      hasNextPage: limit * page < totalItems,
+      nextPage: page + 1,
+      hasPrevPage: page > 1,
+      prevPage: page - 1,
+      lastPage: Math.ceil(totalItems / limit),
     });
   } catch (err) {
     console.log(err);

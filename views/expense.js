@@ -69,6 +69,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (ispremiumuser) {
       showPremiumUserMessage();
       showLeaderBoard();
+      showDownloadBtn();
     }
 
     let currentPage = 1;
@@ -76,35 +77,35 @@ window.addEventListener("DOMContentLoaded", async () => {
     async function getExpenses(page) {
       const limit = document.getElementById("limit").value;
 
-      const response = await axios.get(
+      const { data } = await axios.get(
         `http://localhost:3000/getExpenses?page=${page}&limit=${limit}`,
         {
           headers: { Authorization: token },
         }
       );
-      console.log(response);
-      response.data.expenses.forEach((element) => {
+      console.log(data);
+      list.innerHTML = "";
+
+      data.expenses.forEach((element) => {
         ShowOnScreen(element);
       });
 
       document.getElementById("limit").addEventListener("change", () => {
-        getExpenses(currentPage);
+        getExpenses(page);
       });
-      document.querySelector("#currentPageBtn").textContent =
-        response.data.currentPage;
-      document.querySelector("#prevPageBtn").disabled =
-        response.data.currentPage === 1;
-      document.querySelector("#nextPageBtn").disabled =
-        response.data.currentPage === response.data.totalPages;
+      document.getElementById("currentPageBtn").textContent = data.currentPage;
+      document.getElementById("prevPageBtn").disabled = data.currentPage === 1;
+      document.getElementById("nextPageBtn").disabled =
+        data.currentPage === data.totalPages;
     }
 
     getExpenses(currentPage);
 
-    document.querySelector("#prevPageBtn").addEventListener("click", () => {
+    document.getElementById("prevPageBtn").addEventListener("click", () => {
       currentPage--;
       getExpenses(currentPage);
     });
-    document.querySelector("#nextPageBtn").addEventListener("click", () => {
+    document.getElementById("nextPageBtn").addEventListener("click", () => {
       currentPage++;
       getExpenses(currentPage);
     });
@@ -199,9 +200,19 @@ async function showLeaderBoard() {
   };
 }
 
-const downloadBtn = document.getElementById("downloadexpense");
+// const downloadBtn = document.getElementById("downloadexpense");
+function showDownloadBtn() {
+  const downloadBtn = document.createElement("button");
+  downloadBtn.textContent = "Download Expense";
+  downloadBtn.className = "btn border border-dark bg-dark text-white w-25";
+  downloadBtn.style = "margin-left: 74%;";
+  downloadBtn.addEventListener("click", handleDownloadBtn);
 
-downloadBtn.onclick = async function () {
+  const downloadBtndiv = document.getElementById("downloadExpense");
+  downloadBtndiv.appendChild(downloadBtn);
+}
+
+async function handleDownloadBtn() {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get("http://localhost:3000/user/download", {
@@ -220,7 +231,7 @@ downloadBtn.onclick = async function () {
   } catch (err) {
     console.log(err);
   }
-};
+}
 
 razBtn.onclick = async function (e) {
   const token = localStorage.getItem("token");
@@ -260,31 +271,6 @@ razBtn.onclick = async function (e) {
     alert("Something Went wrong");
   });
 };
-
-// function showPagination({
-//   currentPage,
-//   hasNextPage,
-//   nextPage,
-//   hasPrevPage,
-//   prevPage,
-//   lastpage,
-// }) {
-//   const currentPageBtn = document.getElementById("currentPageBtn");
-//   const prevPageBtn = document.getElementById("prevPageBtn");
-//   const document.getElementById('nextPageBtn') = document.getElementById("document.getElementById('nextPageBtn')");
-//   if (hasPrevPage) {
-//     prevPageBtn.innerHTML = prevPage;
-//     prevPageBtn.addEventListener("click", () => getExpenses(prevPage));
-//   }
-
-//   currentPageBtn.innerHTML = `<h3>${currentPage}</h3>`;
-//   currentPageBtn.addEventListener("click", () => getExpenses(currentPage));
-
-//   if (hasNextPage) {
-//     document.getElementById('nextPageBtn').innerHTML = nextPage;
-//     document.getElementById('nextPageBtn').addEventListener("click", () => getExpenses(nextPage));
-//   }
-// }
 
 // const addBtn = document.getElementById("addbtn");
 // const dailyBtn = document.getElementById("dailybtn");
