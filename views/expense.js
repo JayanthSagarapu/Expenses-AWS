@@ -71,14 +71,13 @@ window.addEventListener("DOMContentLoaded", async () => {
       showLeaderBoard();
     }
 
-    const response = await axios.get("http://localhost:3000/getExpenses", {
-      headers: { Authorization: token },
-    });
-    showPagination(response.data);
+    let currentPage = 1;
 
     async function getExpenses(page) {
+      const limit = document.getElementById("limit").value;
+
       const response = await axios.get(
-        `http://localhost:3000/getExpenses?page=${page}`,
+        `http://localhost:3000/getExpenses?page=${page}&limit=${limit}`,
         {
           headers: { Authorization: token },
         }
@@ -87,39 +86,28 @@ window.addEventListener("DOMContentLoaded", async () => {
       response.data.expenses.forEach((element) => {
         ShowOnScreen(element);
       });
+
+      document.getElementById("limit").addEventListener("change", () => {
+        getExpenses(currentPage);
+      });
+      document.querySelector("#currentPageBtn").textContent =
+        response.data.currentPage;
+      document.querySelector("#prevPageBtn").disabled =
+        response.data.currentPage === 1;
+      document.querySelector("#nextPageBtn").disabled =
+        response.data.currentPage === response.data.totalPages;
     }
-    let currentPage = 1;
+
     getExpenses(currentPage);
 
-    function showPagination({
-      currentPage,
-      hasNextPage,
-      nextPage,
-      hasPrevPage,
-      prevPage,
-      lastpage,
-    }) {
-      if (hasPrevPage) {
-        document.getElementById("prevPageBtn").innerHTML = prevPage;
-        document
-          .getElementById("prevPageBtn")
-          .addEventListener("click", () => getExpenses(prevPage));
-      }
-
-      if (currentPage) {
-        document.getElementById("currentPageBtn").innerHTML = currentPage;
-        document
-          .getElementById("currentPageBtn")
-          .addEventListener("click", () => getExpenses(currentPage));
-      }
-
-      if (hasNextPage) {
-        document.getElementById("nextPageBtn").innerHTML = nextPage;
-        document
-          .getElementById("nextPageBtn")
-          .addEventListener("click", () => getExpenses(nextPage));
-      }
-    }
+    document.querySelector("#prevPageBtn").addEventListener("click", () => {
+      currentPage--;
+      getExpenses(currentPage);
+    });
+    document.querySelector("#nextPageBtn").addEventListener("click", () => {
+      currentPage++;
+      getExpenses(currentPage);
+    });
   } catch (err) {
     console.log(err);
   }
