@@ -85,8 +85,8 @@ const controller = require("./controller");
 exports.purchasePremium = async (req, res) => {
   try {
     var rzp = new Razorpay({
-      key_id: "rzp_test_JpsZOujIVbRMk3",
-      key_secret: "frGxUe2e0luM7vzGyIPIqlOY",
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
     const amount = 2500;
 

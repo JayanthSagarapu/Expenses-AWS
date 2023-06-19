@@ -1,10 +1,13 @@
+const path = require("path");
+const fs = require("fs");
+
 const express = require("express");
 const app = express();
-
 const cors = require("cors");
-
 const dotenv = require("dotenv");
 dotenv.config();
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 const userRoutes = require("./routes/user");
 const purchaseRoutes = require("./routes/purchase");
@@ -17,6 +20,14 @@ const User = require("./models/UserDb");
 const Expense = require("./models/expense");
 const Order = require("./models/purchase");
 const Forgotpassword = require("./models/forgotPassword");
+
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+app.use(helmet());
+app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(cors());
 app.use(express.json());
@@ -36,10 +47,12 @@ Order.belongsTo(User);
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
+const port = process.env.PORT || 3000;
+
 sequelize
   .sync()
   .then(() => {
-    app.listen(3000);
+    app.listen(port);
   })
   .catch((err) => {
     console.log(err);

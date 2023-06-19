@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const client = Sib.ApiClient.instance;
 const apiKey = client.authentications["api-key"];
-apiKey.apiKey = process.env.API_KEY;
+apiKey.apiKey = process.env.SIB_API_KEY;
 
 const uuid = require("uuid");
 const User = require("../models/UserDb");

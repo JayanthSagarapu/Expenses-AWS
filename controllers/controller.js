@@ -28,7 +28,7 @@ const addUser = async (req, res, next) => {
 const generateAccessToken = (id, username, ispremiumuser) => {
   return jwt.sign(
     { userId: id, username: username, ispremiumuser },
-    "jayanthsecretkey"
+    process.env.TOKEN_SECRET
   );
 };
 

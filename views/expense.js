@@ -117,6 +117,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function ShowOnScreen(res) {
   const token = localStorage.getItem("token");
 
+  const Expense = document.getElementById("Expense");
+  Expense.textContent = Number(Expense.textContent) + Number(res.amount);
+
   const li = document.createElement("li");
 
   li.className =
