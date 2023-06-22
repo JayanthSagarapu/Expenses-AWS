@@ -49,6 +49,11 @@ Forgotpassword.belongsTo(User);
 
 const port = process.env.PORT || 3000;
 
+app.use((req, res) => {
+  console.log("ulr", req.url);
+  res.sendFile(path.join(__dirname, "views/Login/login.html"));
+});
+
 sequelize
   .sync()
   .then(() => {

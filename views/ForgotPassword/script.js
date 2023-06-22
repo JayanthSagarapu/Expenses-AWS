@@ -3,11 +3,11 @@ const loginBtn = document.getElementById("login");
 const errormsg = document.getElementById("error");
 
 signBtn.onclick = async () => {
-  window.location.href = "../views/Signup/signup.html";
+  window.location.href = "../Signup/signup.html";
 };
 
 loginBtn.onclick = async () => {
-  window.location.href = "../views/Login/login.html";
+  window.location.href = "../Login/login.html";
 };
 
 async function signUp(event) {
@@ -30,7 +30,7 @@ async function signUp(event) {
       );
       console.log(response);
       if (response.status === 200) {
-        window.location.href = "../Login/login.html";
+        window.location.href = "../views/login.html";
       }
     }
   } catch (err) {
@@ -60,7 +60,7 @@ async function login(event) {
       );
       console.log(response);
       localStorage.setItem("token", response.data.token);
-      window.location.href = "../views/Expense/expense.html";
+      window.location.href = "../views/expense.html";
       // event.target.reset();
     }
   } catch (err) {
@@ -83,7 +83,7 @@ async function forgetPassword(event) {
           email: email,
         }
       );
-      window.location.href = "../views/Login/login.html";
+      window.location.href = "../views/Loginlogin.html";
       event.target.reset();
       console.log(response);
     }

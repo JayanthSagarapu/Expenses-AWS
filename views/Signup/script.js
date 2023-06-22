@@ -3,11 +3,11 @@ const loginBtn = document.getElementById("login");
 const errormsg = document.getElementById("error");
 
 signBtn.onclick = async () => {
-  window.location.href = "../views/Signup/signup.html";
+  window.location.href = "../Signup/signup.html";
 };
 
 loginBtn.onclick = async () => {
-  window.location.href = "../views/Login/login.html";
+  window.location.href = "../Login/login.html";
 };
 
 async function signUp(event) {
